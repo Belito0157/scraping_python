@@ -45,12 +45,26 @@ class ScrappingService():
             scrapped_page = self.scrape_page(link)
             print(f"Finished scrapping of the page {link}.")
 
-            price = scrapped_page.find('h4', class_="pull-right price").text
-            name = scrapped_page.find('h4', class_=None).text
-            description = scrapped_page.find('p', class_="description").text
-            review = scrapped_page.select('p', class_=None)[5].text.strip()
-            items = [i.text for s in ['button.btn.swatch', 'button.btn.primary'] for i in scrapped_page.select(s)]
-
+            try:
+                price = scrapped_page.find('h4', class_="pull-right price").text 
+            except:
+                price = "0"
+            try:
+                name = scrapped_page.find('h4', class_=None).text
+            except:
+                name = "No name"
+            try:    
+                description = scrapped_page.find('p', class_="description").text
+            except:
+                description = "No description"
+            try:
+                review = scrapped_page.select('p', class_=None)[5].text.strip()
+            except:
+                review = "0"
+            try:
+                items = [i.text for s in ['button.btn.swatch', 'button.btn.primary'] for i in scrapped_page.select(s)]
+            except:
+                items=[]
             laptop = {
                 'name': name,
                 'price': float(price.replace('$', '')),
